@@ -1,0 +1,62 @@
+info:
+  title: "My API"
+  version: "1.0.0"
+paths:
+  /api/v1/characters/{id}:
+    get:
+      summary: "Get character by ID"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        '200':
+          description: "OK"
+  /api/v1/characters:
+    post:
+      summary: "Save a character"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Character"
+      responses:
+        '200':
+          description: "OK"
+  /api/v1/characters/get-swapi:
+    get:
+      summary: "Get characters from SWAPI"
+      responses:
+        '200':
+          description: "OK"
+components:
+  schemas:
+    Character:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        height:
+          type: "string"
+        mass:
+          type: "string"
+        hair_color:
+          type: "string"
+        skin_color:
+          type: "string"
+        eye_color:
+          type: "string"
+        birth_year:
+          type: "string"
+        gender:
+          type: "string"
+        homeworld:
+          type: "string"
+        created:
+          type: "string"
+        edited:
+          type: "string"
+        url:
+          type: "string"
