@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyHandler } from "aws-lambda";
-import { SwapiService } from "../application/swapi_service";
+import { SwapiService } from "../application/swapiService";
 
 const swapiService = new SwapiService();
 

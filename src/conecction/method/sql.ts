@@ -23,7 +23,7 @@ export const save = async (tabla: any, object: any) => {
     const connection = await pool.getConnection();
     const [results, fields] = await connection.query(`INSERT INTO ${tabla} SET ?`, object);
     connection.release();
-    // Verifica si results es un objeto y si tiene la propiedad insertId
+    // Verifico si results es un objeto y si tiene la propiedad insertId
     if (typeof results === 'object' && 'insertId' in results) {
         return results.insertId;
     } else {

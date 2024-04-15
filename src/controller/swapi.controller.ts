@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { CharacterInterface } from '../domain/character.interface';
-import { SwapiService } from "../application/swapi_service";
+import { SwapiService } from "../application/swapiService";
 
 const swapiService = new SwapiService();
 
