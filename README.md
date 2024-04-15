@@ -2,7 +2,6 @@
 
 Este repositorio contiene el código fuente de una API desarrollada en Node.js con el framework Serverless para su despliegue en AWS. La API se encarga de proporcionar información sobre personajes de StarWars, traducida al español, y de almacenarla en una base de datos MySQL alojada en AWS RDS.
 
-
 ## Funcionamiento de la API
 # Endpoint GET characters/{id}
 * Este endpoint recibe un parámetro {id} que representa el número de una persona.
@@ -28,13 +27,12 @@ Para configurar las variables de entorno en modo de producción, sigue estos pas
 1. Crea un archivo `.env.prod` en la raíz del proyecto.
 2. Define las variables de entorno necesarias en el archivo `.env.prod`, por ejemplo:
 
-```plaintext
-DB_HOST=tu-host
-DB_USER=tu-usuario
-DB_PASSWORD=tu-contraseña
-DB_DATABASE=tu-base-de-datos
-
+* DB_HOST=tu-host
+* DB_USER=tu-usuario
+* DB_PASSWORD=tu-contraseña
+* DB_DATABASE=tu-base-de-datos
 ## Despliegue en AWS
+
 * Los tres endpoints mencionados anteriormente fueron desplegados en AWS utilizando el framework Serverless.
 * Cada función Lambda asociada a un endpoint fue implementada y configurada en AWS Lambda.
 * La infraestructura de API Gateway se configuró para exponer los endpoints a través de una API HTTP.
@@ -46,4 +44,5 @@ DB_DATABASE=tu-base-de-datos
 
 ```bash
 serverless deploy --stage prod --verbose
+
 
