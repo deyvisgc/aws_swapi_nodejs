@@ -8,17 +8,17 @@ Este repositorio contiene el código fuente de una API desarrollada en Node.js c
 * Cuando se hace una solicitud a este endpoint, el sistema realiza una llamada a la API de SWAPI para obtener la información del personaje correspondiente al ID proporcionado.
 * Después de obtener la información del personaje de SWAPI, el sistema traduce los nombres de los atributos al español.
 * La información traducida se devuelve como respuesta al cliente que realizó la solicitud.
- Puedes acceder a este endpoint aquí: [[GET /characters/{id}](https://dndikr8nak.execute-api.us-east-1.amazonaws.com/api/v1/characters/30) ](https://dndikr8nak.execute-api.us-east-1.amazonaws.com/api/v1/characters/30)
+ Puedes acceder a este endpoint aquí: [[GET /characters/{id}]([https://dndikr8nak.execute-api.us-east-1.amazonaws.com/api/v1/characters/30](https://dndikr8nak.execute-api.us-east-1.amazonaws.com/api/v1/characters/30))]
 # Endpoint POST api/v1/characters
 * Este endpoint se utiliza para cargar información de personajes en una base de datos MySQL.
 * Los datos necesarios para este endpoint son los mismos que se obtienen del endpoint GET mencionado anteriormente, pero ya traducidos al español.
 * Cuando se realiza una solicitud POST a este endpoint, el sistema toma los datos proporcionados y los inserta en la base de datos MySQL alojada en AWS RDS.
-Puedes acceder a este endpoint aquí: [POST /characters] [[https://dndikr8nak.execute-api.us-east-1.amazonaws.com/api/v1/characters]](https://dndikr8nak.execute-api.us-east-1.amazonaws.com/api/v1/characters)
+Puedes acceder a este endpoint aquí: [POST /characters] [[https://dndikr8nak.execute-api.us-east-1.amazonaws.com/api/v1/characters]](https://dndikr8nak.execute-api.us-east-1.amazonaws.com/api/v1/characters) 
 # Endpoint GET api/v1/characters/get-swapi
 * Este endpoint se utiliza para recuperar la información de personajes almacenada en la base de datos MySQL.
 * Al hacer una solicitud a este endpoint, el sistema realiza una consulta a la base de datos para obtener la información de todos los personajes almacenados.
 * La información recuperada se devuelve como respuesta al cliente que realizó la solicitud.
-Puedes acceder a este endpoint aquí: [POST /characters][ [https://dndikr8nak.execute-api.us-east-1.amazonaws.com/api/v1/characters]](https://go21a8a5tl.execute-api.us-east-1.amazonaws.com/api/v1/characters/get-swapi)
+Puedes acceder a este endpoint aquí: [GET /characters/get-swapi][ [https://dndikr8nak.execute-api.us-east-1.amazonaws.com/api/v1/characters/get-swapi]](https://dndikr8nak.execute-api.us-east-1.amazonaws.com/api/v1/characters/get-swapi)
 
 ## Configuración de Variables de Entorno
 
@@ -43,6 +43,6 @@ Para configurar las variables de entorno en modo de producción, sigue estos pas
 2. Ejecuta el siguiente comando en la raíz del proyecto para desplegar la API:
 
 ```bash
-serverless deploy --stage prod --verbose
+serverless deploy --stage dev o prod --verbose
 
 
