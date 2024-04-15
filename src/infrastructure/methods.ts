@@ -1,4 +1,4 @@
-import pool from '../connect';
+import pool from '../config/connection';
 
 export const get = async () => {
     const sql = `SELECT c.*,

@@ -120,5 +120,5 @@ custom:
       format: cjs
    # Configura una ruta para servir los archivos estáticos de Swagger UI
   dotenv:
-    path: .env.${opt:stage, 'prod'}
+    path: .env.${opt:stage, 'dev'}
          

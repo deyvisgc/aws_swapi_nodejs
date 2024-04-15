@@ -876,7 +876,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   SwapiService: () => (/* binding */ SwapiService)
 /* harmony export */ });
 /* harmony import */ var _infrastructure_swapiClient__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../infrastructure/swapiClient */ "../../../src/infrastructure/swapiClient.ts");
-/* harmony import */ var _conecction_method_sql__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../conecction/method/sql */ "../../../src/conecction/method/sql.ts");
+/* harmony import */ var _infrastructure_methods__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../infrastructure/methods */ "../../../src/infrastructure/methods.ts");
 
 
 class SwapiService {
@@ -931,35 +931,35 @@ class SwapiService {
       edited: new Date(body.editado).toISOString().slice(0, 19).replace("T", " "),
       url: body.url
     };
-    const lastId = await (0,_conecction_method_sql__WEBPACK_IMPORTED_MODULE_1__.save)("characters", characters);
+    const lastId = await (0,_infrastructure_methods__WEBPACK_IMPORTED_MODULE_1__.save)("characters", characters);
     if (lastId > 0) {
       body?.peliculas.forEach(async (url) => {
         const peliculas = {
           character_id: lastId,
           film_url: url
         };
-        await (0,_conecction_method_sql__WEBPACK_IMPORTED_MODULE_1__.save)("films", peliculas);
+        await (0,_infrastructure_methods__WEBPACK_IMPORTED_MODULE_1__.save)("films", peliculas);
       });
       body?.vehiculos.forEach(async (url) => {
         const vehiculo = {
           character_id: lastId,
           vehicle_url: url
         };
-        await (0,_conecction_method_sql__WEBPACK_IMPORTED_MODULE_1__.save)("vehicles", vehiculo);
+        await (0,_infrastructure_methods__WEBPACK_IMPORTED_MODULE_1__.save)("vehicles", vehiculo);
       });
       body?.naves_espaciales.forEach(async (url) => {
         const naves = {
           character_id: lastId,
           starship_url: url
         };
-        await (0,_conecction_method_sql__WEBPACK_IMPORTED_MODULE_1__.save)("starships", naves);
+        await (0,_infrastructure_methods__WEBPACK_IMPORTED_MODULE_1__.save)("starships", naves);
       });
       body?.especies.forEach(async (url) => {
         const naves = {
           character_id: lastId,
           species_url: url
         };
-        await (0,_conecction_method_sql__WEBPACK_IMPORTED_MODULE_1__.save)("species", naves);
+        await (0,_infrastructure_methods__WEBPACK_IMPORTED_MODULE_1__.save)("species", naves);
       });
     } else {
       console.log("Error al crear");
@@ -967,7 +967,7 @@ class SwapiService {
     return lastId;
   }
   async getSwapi() {
-    const lista = await (0,_conecction_method_sql__WEBPACK_IMPORTED_MODULE_1__.get)();
+    const lista = await (0,_infrastructure_methods__WEBPACK_IMPORTED_MODULE_1__.get)();
     if (lista && lista.length > 0) {
       const characters = lista.map((row) => ({
         id: row.id,
@@ -996,10 +996,10 @@ class SwapiService {
 
 /***/ }),
 
-/***/ "../../../src/conecction/connect.ts":
-/*!******************************************!*\
-  !*** ../../../src/conecction/connect.ts ***!
-  \******************************************/
+/***/ "../../../src/config/connection.ts":
+/*!*****************************************!*\
+  !*** ../../../src/config/connection.ts ***!
+  \*****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1023,51 +1023,6 @@ const pool = mysql2_promise__WEBPACK_IMPORTED_MODULE_0__.createPool({
   debug: false
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (pool);
-
-
-/***/ }),
-
-/***/ "../../../src/conecction/method/sql.ts":
-/*!*********************************************!*\
-  !*** ../../../src/conecction/method/sql.ts ***!
-  \*********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   get: () => (/* binding */ get),
-/* harmony export */   save: () => (/* binding */ save)
-/* harmony export */ });
-/* harmony import */ var _connect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../connect */ "../../../src/conecction/connect.ts");
-
-const get = async () => {
-  const sql = `SELECT c.*,
-    GROUP_CONCAT(DISTINCT f.film_url) AS films,
-    GROUP_CONCAT(DISTINCT v.vehicle_url) AS vehicles,
-    GROUP_CONCAT(DISTINCT s.starship_url) AS starships,
-    GROUP_CONCAT(DISTINCT sp.species_url) AS species
-    FROM characters c
-    LEFT JOIN films f ON c.id = f.character_id
-    LEFT JOIN vehicles v ON c.id = v.character_id
-    LEFT JOIN starships s ON c.id = s.character_id
-    LEFT JOIN species sp ON c.id = sp.character_id
-    GROUP BY c.id`;
-  const connection = await _connect__WEBPACK_IMPORTED_MODULE_0__["default"].getConnection();
-  const [results, fields] = await connection.query(sql);
-  connection.release();
-  return results;
-};
-const save = async (tabla, object) => {
-  const connection = await _connect__WEBPACK_IMPORTED_MODULE_0__["default"].getConnection();
-  const [results, fields] = await connection.query(`INSERT INTO ${tabla} SET ?`, object);
-  connection.release();
-  if (typeof results === "object" && "insertId" in results) {
-    return results.insertId;
-  } else {
-    throw new Error("No se pudo obtener insertId");
-  }
-};
 
 
 /***/ }),
@@ -1155,6 +1110,51 @@ const getCharacter = async (event) => {
       statusCode: 500,
       body: JSON.stringify({ error: "Failed to fetch character data" })
     };
+  }
+};
+
+
+/***/ }),
+
+/***/ "../../../src/infrastructure/methods.ts":
+/*!**********************************************!*\
+  !*** ../../../src/infrastructure/methods.ts ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   get: () => (/* binding */ get),
+/* harmony export */   save: () => (/* binding */ save)
+/* harmony export */ });
+/* harmony import */ var _config_connection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../config/connection */ "../../../src/config/connection.ts");
+
+const get = async () => {
+  const sql = `SELECT c.*,
+    GROUP_CONCAT(DISTINCT f.film_url) AS films,
+    GROUP_CONCAT(DISTINCT v.vehicle_url) AS vehicles,
+    GROUP_CONCAT(DISTINCT s.starship_url) AS starships,
+    GROUP_CONCAT(DISTINCT sp.species_url) AS species
+    FROM characters c
+    LEFT JOIN films f ON c.id = f.character_id
+    LEFT JOIN vehicles v ON c.id = v.character_id
+    LEFT JOIN starships s ON c.id = s.character_id
+    LEFT JOIN species sp ON c.id = sp.character_id
+    GROUP BY c.id`;
+  const connection = await _config_connection__WEBPACK_IMPORTED_MODULE_0__["default"].getConnection();
+  const [results, fields] = await connection.query(sql);
+  connection.release();
+  return results;
+};
+const save = async (tabla, object) => {
+  const connection = await _config_connection__WEBPACK_IMPORTED_MODULE_0__["default"].getConnection();
+  const [results, fields] = await connection.query(`INSERT INTO ${tabla} SET ?`, object);
+  connection.release();
+  if (typeof results === "object" && "insertId" in results) {
+    return results.insertId;
+  } else {
+    throw new Error("No se pudo obtener insertId");
   }
 };
 

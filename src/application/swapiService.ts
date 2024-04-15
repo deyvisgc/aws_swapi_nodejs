@@ -1,6 +1,6 @@
 import { CharacterInterface } from '../domain/character.interface';
 import { SwapiClient } from '../infrastructure/swapiClient';
-import { save, get } from '../conecction/method/sql'
+import { save, get } from '../infrastructure/methods'
 export class SwapiService {
 
   private swapiClient: SwapiClient;
